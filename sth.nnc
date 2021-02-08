@@ -1,0 +1,6 @@
+lyer = 4
+conv 5
+pool 4
+depth relu 7
+depth softmax 3
+endf
