@@ -48,11 +48,19 @@ conv::net::net(string nncfile){  //nnc=nueral network configure
     nncreader>>layernum;
     int m;
     int n;
+    vector<ldvector> wei;
     for(int i=0;i<layernum;i++){
         nncreader>>val;
             if(val=="conv"){
+                wei.clear();
+                wei.push_back();
                 nncreader>>m;
-                ly.push_back(new convlayer(m));
+                ldouble midw;
+                for(int i=0;i<m;i++){
+                    nncreader>>midw;
+                    wei[0].push_back(midw);
+                }
+                ly.push_back(new convlayer(wei[0]));
                 n=m;
             }
             else if(val=="pool"){
@@ -61,6 +69,7 @@ conv::net::net(string nncfile){  //nnc=nueral network configure
                 n=m;
             }
             else if(val=="depth"){
+                wei.clear();
                 dpnt type=dnone;
                 m=0;
                 nncreader>>id;
@@ -81,7 +90,15 @@ conv::net::net(string nncfile){  //nnc=nueral network configure
                 }
                 nncreader>>m;
                 std::cout<<m<<endl;
-                ly.push_back(new depthlayer(n,m,type));
+                ldouble midw;
+                for(int i=0;i<m;i++){
+                    wei.push_back();
+                    for(int j=0;j<n;j++){
+                        nncreader>>midw;
+                        wei[i].push_back(midw);
+                    }
+                }
+                ly.push_back(new depthlayer(type,wei));
                 n=m;
             }
             else{
@@ -109,7 +126,7 @@ ldvector* conv::net::exec(string inputfile){
     inreader.seekg(0,ios::beg);
     inreader.read(mid,objectlength);
     for(int i=0;i<objectlength;i++){
-        object.push_back(0);
+        object.push_back(static_cast<ldouble>(0));
         object[i]=mid[i];
         if(i<objectlength){
             std::cout<<static_cast<int>(static_cast<unsigned char>(mid[i]))<<' ';

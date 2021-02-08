@@ -61,7 +61,7 @@
          int                 objlength                                                ;
          void                calc              (void)                                 ;
      public:
-         explicit            convlayer         (int)                                  ;
+         explicit            convlayer         (ldvector&)                            ;
          inline    virtual  ~convlayer         (void)                override =default;
          virtual   void      process           (ldvector&)           override         ;
 //       inline    void      set_object_length (long int)                             ;
@@ -79,14 +79,14 @@
      }                                                               ;
      class depthlayer:public layer{
      protected:
-         vector<ldvector>  softmaxwei                        ;
-         bool              ifsoftmax                         ;
+         vector<ldvector>  softmaxwei                                  ;
+         bool              ifsoftmax                                   ;
      public:
-         explicit          depthlayer (int,int,dpnt)         ;
-         virtual          ~depthlayer (void)         =default;
-         virtual void      process    (ldvector&)            ;
-//       void              initialize (int,int,dpnt)         ;
-     }                                                       ;
+         explicit          depthlayer (dpnt,vector<ldvector>&)         ;
+         virtual          ~depthlayer (void)                   =default;
+         virtual void      process    (ldvector&)                      ;
+//       void              initialize (int,int,dpnt)                   ;
+     }                                                                 ;
      inline conv::layer::layer(int n,lyt ly):length(n){
      }
      inline conv::poolayer::poolayer(int n1):layer(n1,pooling){

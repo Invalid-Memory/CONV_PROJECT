@@ -25,10 +25,10 @@ using conv::ldouble;
 using conv::ldvector;
 int main(int argc,char** argv){
     if(argc!=3){
-         throw -1;
+         //throw -1;
     }
-    net convpart(argv[1]);
-    ldvector* res=convpart.exec(argv[2]);
+    net convpart("../sth.nnc");
+    ldvector* res=convpart.exec("../abc.wav");
     for(int i=0;i<(res->size());i++){
         std::cout<<(*res)[i]<<' ';
     }

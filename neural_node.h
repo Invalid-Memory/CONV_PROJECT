@@ -23,40 +23,40 @@
      typedef vector<ldouble> ldvector;
      class node{
      protected:
-         typedef           node      *pnode     ;
-         ldouble           data                 ;
-         ldouble*          inweight             ;
-         int               weilen               ;
-//       pnode*            link                 ;
-//       int               link_num             ;
+         typedef           node      *pnode          ;
+         ldouble           data                      ;
+         ldouble*          inweight                  ;
+         int               weilen                    ;
+//       pnode*            link                      ;
+//       int               link_num                  ;
      public:
-         explicit          node      (int)      ;
-         virtual          ~node      (void)     ;
+         explicit          node      (ldvector&)     ;
+         virtual          ~node      (void)          ;
          virtual  ldouble  activate  (ldvector&) pure;
      };
      class sigmoidnode:public node{
      public:
-         inline sigmoidnode(int);
+         inline sigmoidnode(ldvector&);
          ldouble activate(ldvector&)override;
      };
      class relunode:public node{
      public:
-         inline           relunode (int)                        ;
+         inline           relunode (ldvector&)                  ;
          virtual  inline ~relunode (void)      override =default;
          ldouble          activate (ldvector&) override         ;
      }                                                          ;
      class softplusnode:public node{
      public:
-         explicit inline  softplusnode (int)                        ;
+         explicit inline  softplusnode (ldvector&)                  ;
          virtual  inline ~softplusnode (void)      override =default;
          ldouble          activate     (ldvector&) override         ;
      }                                                              ;
 
-     inline conv::sigmoidnode::sigmoidnode(int n):node(n){
+     inline conv::sigmoidnode::sigmoidnode(ldvector& n):node(n){
      }
-     inline conv::relunode::relunode(int n):node(n){
+     inline conv::relunode::relunode(ldvector& n):node(n){
      }
-     inline conv::softplusnode::softplusnode(int n):node(n){
+     inline conv::softplusnode::softplusnode(ldvector& n):node(n){
      }
 //rubbish bin----------------------------------------------
      /*class convnode:public node{

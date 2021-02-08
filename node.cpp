@@ -19,14 +19,14 @@
 #include <iostream>
 using std::endl;
 using conv::ldouble;
-conv::node::node(int n):data(0),weilen(n){
-    if(n==0){
+conv::node::node(ldvector& wei):data(0),weilen(wei.size()){
+    if(wei.size()==0){
         inweight=nullptr;
     }
     else{
-        inweight=new ldouble[n];
-        for(int i=0;i<n;i++){
-            initweight(inweight[i]);
+        inweight=new ldouble[wei.size()];
+        for(int i=0;i<wei.size();i++){
+            inweight[i]=wei[i];
         }
     }
 }
@@ -47,6 +47,7 @@ ldouble conv::sigmoidnode::activate(ldvector& input){
 }
 ldouble conv::relunode::activate(ldvector& input){
     if(input.size()!=weilen){
+        std::cout<<input.size()<<"!="<<weilen<<endl;
         throw -1;
     }
     ldouble res=0;

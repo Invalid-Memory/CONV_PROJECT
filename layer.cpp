@@ -24,7 +24,7 @@
 using    std::endl                        ;
 using    conv::convlayer                  ;
 using    conv::ldouble                    ;
-using    conv::ldvector                        ;
+using    conv::ldvector                   ;
 //using  std::thread                      ;
 //using  std::mutex                       ;
 //using  std::lock_guard                  ;
@@ -39,10 +39,9 @@ conv::layer::~layer(void){
         delete lay[i];
     }
 }
-conv::convlayer::convlayer(int n1):layer(n1,conv){
-    for(int i=0;i<n1;i++){
-        weight.push_back(0);
-        initweight(weight[i]);
+conv::convlayer::convlayer(ldvector& wei):layer(wei.size(),conv){
+    for(int i=0;i<wei.size();i++){
+        weight.push_back(wei[i]);
     }
     std::cout<<"CONV Construction"<<endl;
 }
@@ -63,7 +62,7 @@ void conv::convlayer::process(ldvector& input){
     buffer.clear();
     objlength=input.size();
     for(int i=0;i<objlength;i++){
-        buffer.push_back(0);
+        buffer.push_back(0.0);
     }
     calc();
     input.copy(buffer);
@@ -71,7 +70,7 @@ void conv::convlayer::process(ldvector& input){
 void conv::poolayer::process(ldvector& input){
     int len=input.size();
     for(int i=0;i<((len%4==0)?(0):(length-(len%length)));i++){
-        input.push_back(0);
+        input.push_back(0.0);
     }
     int reslen=input.size()/length;
     ldvector res;
@@ -85,7 +84,7 @@ void conv::poolayer::process(ldvector& input){
     }
     input.copy(res);
 }
-conv::depthlayer::depthlayer(int n,int n1,dpnt t):layer(n1,depth){
+conv::depthlayer::depthlayer(dpnt t,vector<ldvector>& wei):layer(wei[0].size(),depth){
     ifsoftmax=false;
     switch(t){
     case dnone:
@@ -93,32 +92,27 @@ conv::depthlayer::depthlayer(int n,int n1,dpnt t):layer(n1,depth){
         break;
     case dsoftmax:
         ifsoftmax=true;
-        for(int i=0;i<n1;i++){
-            softmaxwei.push_back();
-            for(int j=0;j<n;j++){
-                softmaxwei[i].push_back(0);
-                initweight(softmaxwei[i][j]);
-            }
-        }
+        softmaxwei.move(right_ref(wei));
         std::cout<<softmaxwei.size()<<endl;
         break;
     case dsoftplus:
-        for(int i=0;i<n1;i++){
-            lay.push_back(new softplusnode(n));
+        for(int i=0;i<wei.size();i++){
+            lay.push_back(new softplusnode(wei[i]));
         }
         break;
     case drelu:
-        for(int i=0;i<n1;i++){
-            lay.push_back(new relunode(n));
+        for(int i=0;i<wei.size();i++){
+            lay.push_back(new relunode(wei[i]));
         }
         break;
     case dsigmoid:
-        for(int i=0;i<n1;i++){
-            lay.push_back(new sigmoidnode(n));
+        for(int i=0;i<wei.size();i++){
+            lay.push_back(new sigmoidnode(wei[i]));
         }
         break;
     }
-    std::cout<<"DEPTH Construction, node="<<n1<<", pre="<<n<<endl;
+    std::cout<<"DEPTH Construction, node="<<((ifsoftmax==true)?(softmaxwei[0].size()):(wei[0].size()))
+             <<", pre="<<((ifsoftmax==true)?(softmaxwei.size()):(wei.size()))<<endl;
 }
 void conv::depthlayer::process(ldvector& input){
     ldvector res;
@@ -131,7 +125,7 @@ void conv::depthlayer::process(ldvector& input){
         ldvector mid;
         ldouble sum=0;
         for(int i=0;i<softmaxwei.size();i++){
-            mid.push_back(0);
+            mid.push_back(0.0);
             for(int j=0;j<softmaxwei[i].size();j++){
                 mid[i]+=input[j]*softmaxwei[i][j];
             }

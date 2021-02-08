@@ -3,8 +3,10 @@ OPTION   = -std=c++2a -fPIC
 REMOVE   = rm -f
 OBJFILE  = main.o net.o node.o layer.o def.o str.o
 OUTFILE  = exec
-total: $(OUTFILE) clear
+total: startup $(OUTFILE) clear
 
+startup:
+	$(REMOVE) $(OUTFILE)
 $(OUTFILE): $(OBJFILE)
 	$(COMPILE) -o exec $(OBJFILE) $(OPTION)
 
