@@ -16,19 +16,31 @@
 |   along with this program.  If not, see <https://www.gnu.org/licenses/>.  |
 \--------------------------------------------------------------------------*/
 //#include <linux/soundcard.h>
-#include <iomanip>
+//#include <iomanip>
 #include "project.h"
 using std::endl;
 using conv::net;
 using conv::vector;
 using conv::ldouble;
 using conv::ldvector;
+using conv::string;
 int main(int argc,char** argv){
-    if(argc!=3){
-         //throw -1;
+    if(argc==2){
+        if(string(argv[1])=="--help"){
+            std::cout<<"exec <configure file> <object file>"<<endl;
+            return 0;
+        }
+        else{
+            std::cout<<"Unknown options."<<endl;
+            return 0;
+        }
     }
-    net convpart("../sth.nnc");
-    ldvector* res=convpart.exec("../abc.wav");
+    else if(argc!=3){
+        std::cout<<"Unknown options."<<endl;
+        return 0;
+    }
+    net convpart(argv[1]);
+    ldvector* res=convpart.exec(argv[2]);
     for(int i=0;i<(res->size());i++){
         std::cout<<(*res)[i]<<' ';
     }

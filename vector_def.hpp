@@ -68,7 +68,7 @@
      template <typename type>
      template <typename...argpack>
      void vector<type>::push_back(argpack...pack){
-      //   static_assert(requires{new type{pack...};},"Initializer list invalid.");
+         static_assert(requires{new type{pack...};},"Initializer list invalid.");
          tail->next=new lelem;
          tail->next->up=tail;
          tail=tail->next;
@@ -79,7 +79,7 @@
      template <typename type>
      template <typename...argpack>
      void vector<type>::push_front(argpack...pack){
-       //  static_assert(requires{new type{pack...};},"Initializer list invalid.");
+         static_assert(requires{new type{pack...};},"Initializer list invalid.");
          head->up=new lelem;
          head->up->next=head;
          head=head->up;
