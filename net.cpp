@@ -122,33 +122,29 @@ ldvector* conv::net::exec(string inputfile){
     }
     inreader.seekg(0,ios::end);
     objectlength=inreader.tellg();
-    byte* mid=new byte[objectlength+100]{0};
+    byte* mid=new byte[objectlength]{0};
     inreader.seekg(0,ios::beg);
     inreader.read(mid,objectlength);
+    object.clear();
     for(int i=0;i<objectlength;i++){
-        object.push_back(static_cast<ldouble>(0));
-        object[i]=mid[i];
-        if(i<objectlength){
-            std::cout<<static_cast<int>(static_cast<unsigned char>(mid[i]))<<' ';
-        }
+        object.push_back(static_cast<ldouble>(static_cast<unsigned char>(mid[i])));
+        //if(i<objectlength){
+        //    std::cout<<static_cast<int>(static_cast<unsigned char>(mid[i]))<<' ';
+        //}
     }
     delete[] mid;
-    std::cout<<endl<<'\n';
+    //std::cout<<endl<<'\n';
     inreader.close();
-    ldvector* mid1=new ldvector;
-    //ldvector* mid2/*=new obj*/;
-    for(int i=0;i<objectlength;i++){
-        mid1->push_back(object[i]);
-    }
-    std::cout<<endl;
+    //std::cout<<endl;
     for(int i=0;i<ly.size();i++){
-        ly[i]->process(*mid1);
+        ly[i]->process(object);
+        std::cout<<1+i<<" process"<<endl;
         //mid1->move(right_ref(*mid2));
-        for(int i=0;i<(mid1->size());i++){
-           std::cout<</*i<<':'<<*/(*mid1)[i]<<' ';
-        }
-        std::cout<<endl;
+       // for(int i=0;i<(mid1->size());i++){
+        //   std::cout<</*i<<':'<<*/(*mid1)[i]<<' ';
+       // }
+       // std::cout<<endl;
         // mid2;
     }
-    return mid1;
+    return &object;
 }

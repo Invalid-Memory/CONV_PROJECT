@@ -46,13 +46,13 @@ conv::convlayer::convlayer(ldvector& wei):layer(wei.size(),conv){
     std::cout<<"CONV Construction"<<endl;
 }
 void conv::convlayer::calc(void){
-    for(int i=0;i<(length-1)/2;i++){
+    for(int i=0;i<(weight.size()-1)/2;i++){
         object.push_back(static_cast<ldouble>(0));
         object.push_front(static_cast<ldouble>(0));
     }
-    std::cout<<endl;
+    //std::cout<<endl;
     for(int i=0;i<buffer.size();i++){
-        for(int j=0;j<length;j++){
+        for(int j=0;j<weight.size();j++){
             buffer[i]+=object[i+j]*weight[j];
         }
     }
@@ -133,15 +133,15 @@ void conv::depthlayer::process(ldvector& input){
         }
         for(int i=0;i<mid.size();i++){
             res.push_back(exp(mid[i])/sum);
-            std::cout<<mid[i]<<"/"<<'('<<sum<<')'<<"=";
-            std::cout<<res[i]<<endl;
+            //std::cout<<mid[i]<<"/"<<'('<<sum<<')'<<"=";
+            //std::cout<<res[i]<<endl;
         }
         sum=0;
         for(int i=0;i<res.size();i++){
             sum+=res[i];
-            std::cout<<"("<<res[i]<<")"<<"+";
+            //std::cout<<"("<<res[i]<<")"<<"+";
         }
-        std::cout<<"0="<<sum<<endl;
+        //std::cout<<"0="<<sum<<endl;
     }
     input.copy(res);
 }

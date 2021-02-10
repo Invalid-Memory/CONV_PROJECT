@@ -60,6 +60,13 @@
          }
      }
      template <typename type>
+     void vector<type>::copy(type* cp,int s){
+         this->clear();
+         for(int i=0;i<s;i++){
+            this->push_back(cp[i]);
+         }
+     }
+     template <typename type>
      void vector<type>::move(vector&& mv){
          swap(mv.head,this->head);
          swap(mv.tail,this->tail);
@@ -68,7 +75,7 @@
      template <typename type>
      template <typename...argpack>
      void vector<type>::push_back(argpack...pack){
-         static_assert(requires{new type{pack...};},"Initializer list invalid.");
+         //static_assert(requires{new type{pack...};},"Initializer list invalid.");
          tail->next=new lelem;
          tail->next->up=tail;
          tail=tail->next;
@@ -79,7 +86,7 @@
      template <typename type>
      template <typename...argpack>
      void vector<type>::push_front(argpack...pack){
-         static_assert(requires{new type{pack...};},"Initializer list invalid.");
+        // static_assert(requires{new type{pack...};},"Initializer list invalid.");
          head->up=new lelem;
          head->up->next=head;
          head=head->up;

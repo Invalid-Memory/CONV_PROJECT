@@ -40,6 +40,7 @@
          explicit inline   vector     (vector&&)                ;
          virtual  inline  ~vector     (void)                    ;
          void              copy       (const vector&)           ;
+         void              copy       (type*,int)               ;
          void              move       (vector&&)                ;
          template                     <typename...argpack>
          void              push_back  (argpack...)              ;

@@ -44,7 +44,7 @@ int main(int argc,char** argv){
     for(int i=0;i<(res->size());i++){
         std::cout<<(*res)[i]<<' ';
     }
-    std::cout<<endl<<res->size()<<endl;
-    delete res;
+    //std::cout<<endl<<res->size()<<endl;
+   // delete res;
     return 0;
 }
