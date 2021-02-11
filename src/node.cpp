@@ -58,7 +58,7 @@ ldouble conv::relunode::activate(ldvector& input){
 }
 ldouble conv::softplusnode::activate(ldvector& input){
     if(input.size()!=weilen){
-        std::cout<<"Length Not Equal"<<endl;
+        std::cerr<<"Length Not Equal"<<endl;
         throw -1;
     }
     ldouble res=0;

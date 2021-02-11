@@ -20,7 +20,7 @@
 # include "vector_dec.h"
  namespace conv{
      template <typename type>
-     inline vector<type>::vector(void):vsize(0){
+     inline vector<type>::vector(void):vsize(0),last_index(0){
          head=new lelem;
          tail=head;
          head->next=tail;
@@ -28,6 +28,7 @@
          head->up=tail;
          tail->up=head;
          head->it=nullptr;
+         last_aim=head->next;
      }
      template <typename type>
      inline vector<type>::vector(vector&& mv){
@@ -71,6 +72,8 @@
          swap(mv.head,this->head);
          swap(mv.tail,this->tail);
          swap(mv.vsize,this->vsize);
+         swap(mv.last_index,this->last_index);
+         swap(mv.last_aim,this->last_aim);
      }
      template <typename type>
      template <typename...argpack>
@@ -82,6 +85,9 @@
          tail->next=head;
          tail->it=new type{pack...};
          vsize++;
+         if(last_aim==head){
+             last_aim=head->next;
+         }
      }
      template <typename type>
      template <typename...argpack>
@@ -94,6 +100,10 @@
          tail->next=head;
          head->next->it=new type{pack...};
          vsize++;
+         last_index++;
+         if(last_aim==head){
+             last_aim=head->next;
+         }
      }
      template <typename type>
      inline int vector<type>::size(void)const{
@@ -119,6 +129,8 @@
          head->up=tail;
          tail->up=head;
          vsize=0;
+         last_aim=head->next;
+         last_index=0;
      }
      template <typename type>
      type& vector<type>::operator[](int index)const{
@@ -126,10 +138,31 @@
          if(index>=vsize){
              throw -1;
          }
-         lelem* aim=head->next;
-         for(int i=0;i<index;i++){
-             aim=aim->next;
+         lelem* aim=last_aim;
+         if(index==last_index){
+             return (*last_aim->it);
          }
+         else if(index>last_index){
+             for(int i=last_index;i<index;i++){
+                 aim=aim->next;
+                 if(aim==head){
+                     throw -1;
+                 }
+             }
+         }
+         else{
+             for(int i=last_index;i>index;i--){
+                 aim=aim->up;
+                 if(aim==head){
+                     throw -1;
+                 }
+             }
+         }
+         if(aim->it==nullptr){
+             throw -1;
+         }
+         last_aim=aim;
+         last_index=index;
          return *(aim->it);
      }
  }

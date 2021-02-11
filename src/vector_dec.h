@@ -31,6 +31,8 @@
          lelem*            head                                 ;
          lelem*            tail                                 ;
          int               vsize                                ;
+         mutable  int      last_index                           ;
+         mutable  lelem*   last_aim                             ;
          inline   void     swap       (int&,int&)               ;
          inline   void     swap       (fplelem,fplelem)         ;
 //       template                     <typename...argpack>

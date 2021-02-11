@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------\
-|   net.h of ConvNeurNet Project---------Student Work                       |
+|   file_reader.h of ConvNeurNet Project---------Student Work               |
 |   Copyright (C) 2021  丁嘉一                                               |
 +                                                                           +
 |   This program is free software: you can redistribute it and/or modify    |
@@ -15,40 +15,24 @@
 |   You should have received a copy of the GNU General Public License       |
 |   along with this program.  If not, see <https://www.gnu.org/licenses/>.  |
 \--------------------------------------------------------------------------*/
-#ifndef   CONV_PROJECT_NET
-# define  CONV_PROJECT_NET
-# include "layer.h"
-# define hexout(val) std::hex<<"0x"<<std::uppercase<<static_cast<int>(val)<<std::nouppercase<<std::dec
+#ifndef  CONV_PROJECT_FILE
+# define CONV_PROJECT_FILE
+# include <fstream>
+# include "string.h"
  namespace conv{
-     class net{
+     class reader{
      private:
-         vector<layer*> ly;
-         int layernum;
-         ldvector object;
-         int objectlength;
-         string inputfile;
-//       int inputlen;
+         using            fstr                              =std::fstream;
+         fstr             input                                          ;
      public:
-         explicit net(string);
-         ~net(void);
-         ldvector* exec(void);
-         void train(string,string);
-         inline vector<layer*> &get_net(void);
-         inline ldvector& get_object(void);
-         inline int get_objectlen(void);
-         inline ldvector& set_object(void);
-     };
-     inline vector<layer*>& net::get_net(void){
-         return ly;
-     }
-     inline ldvector& net::get_object(void){
-         return object;
-     }
-     inline int net::get_objectlen(void){
-         return objectlength;
-     }
-     inline ldvector& net::set_object(void){
-         return object;
-     }
+         using            ldvector                 =conv::vector<ldouble>;
+         struct           analysed_data{
+             ldvector     chn1;
+             ldvector     chn2;
+         };
+         explicit inline  reader          (void)                 =default;
+         inline          ~reader          (void)                 =default;
+         analysed_data*   read            (string)                       ;
+     }                                                                   ;
  }
 #endif

@@ -18,9 +18,9 @@
 #include <fstream>
 #include <iostream>
 #include "net.h"
-using std::endl;
 using std::fstream;
 using std::ios;
+using std::endl;
 using std::hex;
 using std::dec;
 using std::uppercase;
@@ -28,10 +28,10 @@ using std::nouppercase;
 using conv::ldouble;
 using conv::ldvector;
 conv::net::net(string nncfile){  //nnc=nueral network configure
-    fstream nncreader,inreader;
+    fstream nncreader;
     nncreader.open(static_cast<char*>(nncfile),ios::in);
     if(nncreader.is_open()==false){
-        std::cout<<"failed to open "<<nncfile<<endl;
+        std::cerr<<"failed to open "<<nncfile<<endl;
         throw -1;
     }
     string id;
@@ -66,7 +66,7 @@ conv::net::net(string nncfile){  //nnc=nueral network configure
             else if(val=="pool"){
                 nncreader>>m;
                 ly.push_back(new poolayer(m));
-                n=m;
+                //n=m;
             }
             else if(val=="depth"){
                 wei.clear();
@@ -88,7 +88,7 @@ conv::net::net(string nncfile){  //nnc=nueral network configure
                 else{
                     throw -1;
                 }
-                nncreader>>m;
+                nncreader>>n>>m;
                 std::cout<<m<<endl;
                 ldouble midw;
                 for(int i=0;i<m;i++){
@@ -99,7 +99,7 @@ conv::net::net(string nncfile){  //nnc=nueral network configure
                     }
                 }
                 ly.push_back(new depthlayer(type,wei));
-                n=m;
+               // n=m;
             }
             else{
                 throw -1;
@@ -114,37 +114,9 @@ conv::net::~net(void){
         delete ly[i];
     }
 }
-ldvector* conv::net::exec(string inputfile){
-    fstream inreader;
-    inreader.open(static_cast<const char*>(inputfile),ios::in|ios::binary);
-    if(inreader.is_open()==false){
-        throw -1;
-    }
-    inreader.seekg(0,ios::end);
-    objectlength=inreader.tellg();
-    byte* mid=new byte[objectlength]{0};
-    inreader.seekg(0,ios::beg);
-    inreader.read(mid,objectlength);
-    object.clear();
-    for(int i=0;i<objectlength;i++){
-        object.push_back(static_cast<ldouble>(static_cast<unsigned char>(mid[i])));
-        //if(i<objectlength){
-        //    std::cout<<static_cast<int>(static_cast<unsigned char>(mid[i]))<<' ';
-        //}
-    }
-    delete[] mid;
-    //std::cout<<endl<<'\n';
-    inreader.close();
-    //std::cout<<endl;
+ldvector* conv::net::exec(void){
     for(int i=0;i<ly.size();i++){
         ly[i]->process(object);
-        std::cout<<1+i<<" process"<<endl;
-        //mid1->move(right_ref(*mid2));
-       // for(int i=0;i<(mid1->size());i++){
-        //   std::cout<</*i<<':'<<*/(*mid1)[i]<<' ';
-       // }
-       // std::cout<<endl;
-        // mid2;
     }
     return &object;
 }
