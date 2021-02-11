@@ -29,5 +29,8 @@ $(OBJPATH)/layer.o: $(SRCPATH)/layer.cpp $(SRCPATH)/layer.h
 $(OBJPATH)/net.o: $(SRCPATH)/net.cpp $(SRCPATH)/net.h
 	$(COMPILE) -c -o $(OBJPATH)/net.o $(SRCPATH)/net.cpp $(OPTION)
 
+$(OBJPATH)/read.o: $(SRCPATH)/file_reader.cpp $(SRCPATH)/file_reader.h
+	$(COMPILE) -c -o $(OBJPATH)/read.o $(SRCPATH)/file_reader.cpp $(OPTION)
+
 $(OBJPATH)/main.o: $(SRCPATH)/main.cpp $(SRCPATH)/project.h
 	$(COMPILE) -c -o $(OBJPATH)/main.o $(SRCPATH)/main.cpp $(OPTION)

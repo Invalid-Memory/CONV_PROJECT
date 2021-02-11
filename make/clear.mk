@@ -1,4 +1,4 @@
-REMOVE = rm -f
+REMOVE = rm -rf
 MKSCPT   = $(PWD)/make
 include $(MKSCPT)/objval.mk
 
